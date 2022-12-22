@@ -154,10 +154,13 @@ if configuration.get('scheduler.enabled'):
 # -------------------------------------------------------------------------
 # auth.enable_record_versioning(db)
 
-db.define_table('student_type',
+db = DAL("sqlite://storage.db")
+auth = Auth(db)
+auth.define_tables(username=True)
+
+"""db.define_table('student_type',
             Field('id_student_type','id'),
-            Field('name_student_type','string'),
-            format='%(name_student_type)')
+            Field('name_student_type','string'))"""
 
 db.define_table('student',
             Field('id_student','id'),
@@ -170,8 +173,7 @@ db.define_table('student',
             Field('telephone','integer'),
             Field('email','string'),
             Field('password','password'),
-            Field('uni_carrer','string'),
-            Field('id_student_type','reference student_type'))
+            Field('uni_carrer','string'))
 
 db.define_table('pyme',
             Field('id_pyme','id'),
@@ -181,20 +183,23 @@ db.define_table('pyme',
             Field('student_name','string'),
             Field('category','string'))
 
-db.define_table('posts',
-            Field('id_posts','id'),
+db.define_table('post',
+            Field('id_post','id'),
             Field('id_student','reference student'),
             Field('id_pyme','reference pyme'),
-            Field('title','string'),
-            Field('description','string'),
-            Field('post_date','date'),
-            Field('url','string'))
+            Field('title','string', label="Título",
+            requires=IS_NOT_EMPTY(error_message="Ingrese un título.")),
+            Field('description','text', label="Cuerpo",
+            requires=IS_NOT_EMPTY(error_message="Escriba el contenido.")),
+            Field('image', 'upload' , label="Imagen"),
+            Field('comments','list:string'),
+            Field('post_date','datetime'))
 
-db.define_table('comments',
+"""db.define_table('comments',
             Field('id_comments','id'),
             Field('id_student','reference student'),
-            Field('id_posts','reference posts'),
+            Field('id_post','reference post'),
             Field('title','string'),
             Field('description','string'),
             Field('rating','integer'),
-            Field('comment_date','date'))
+            Field('comment_date','date'))"""

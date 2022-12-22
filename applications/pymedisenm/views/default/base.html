@@ -1,0 +1,9 @@
+<!DOCTYPE html>
+<html>
+{{if auth.user is not None:}}
+    <header>
+      Has iniciado sesión como {{=auth.user.username}}.
+    </header>
+{{pass}}
+  {{include}}
+</html>
