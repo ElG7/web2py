@@ -1,0 +1,25 @@
+{{extend 'layout.html'}}
+<h1>{{=category.name.title()}}</h1>
+
+
+{{pass}}
+{{=A('Crear un nuevo post',_class='btn btn-primary',_href=URL('new_post',args=category.name))}}
+<h2>
+    
+</h2>
+{{for post in rows:}}
+<div class="well">
+           <span class="created_on">{{=post.created_on}}</span>
+    <strong>{{=A(post.title,_href=URL('view_post' ,args=post.id))}} <img width="100px"
+                                                                         src="{{=URL('download', args=post.image)}}" /> </strong>
+</div>
+{{pass}}
+                                  
+{{if page>0:}}
+{{=A('previous',_class='btn',href=URL(args=(category.name,page-1)))}}
+{{pass}}
+                                  
+                                  
+{{if len(rows)>=10:}}
+{{=A('next',_class='btn',href=URL(args=(category.name,pag+1)))}}
+{{pass}}

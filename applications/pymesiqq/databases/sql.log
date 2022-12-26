@@ -1,0 +1,144 @@
+timestamp: 2022-12-24T18:29:58.898793
+CREATE TABLE "auth_user"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "first_name" CHAR(128),
+    "last_name" CHAR(128),
+    "email" CHAR(512),
+    "password" CHAR(512),
+    "registration_key" CHAR(512),
+    "reset_password_key" CHAR(512),
+    "registration_id" CHAR(512)
+);
+success!
+timestamp: 2022-12-24T18:29:59.007803
+CREATE TABLE "auth_group"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "role" CHAR(512),
+    "description" TEXT
+);
+success!
+timestamp: 2022-12-24T18:29:59.108924
+CREATE TABLE "auth_membership"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "user_id" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE  ,
+    "group_id" INTEGER REFERENCES "auth_group" ("id") ON DELETE CASCADE  
+);
+success!
+timestamp: 2022-12-24T18:29:59.214548
+CREATE TABLE "auth_permission"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "group_id" INTEGER REFERENCES "auth_group" ("id") ON DELETE CASCADE  ,
+    "name" CHAR(512),
+    "table_name" CHAR(512),
+    "record_id" INTEGER
+);
+success!
+timestamp: 2022-12-24T18:29:59.325830
+CREATE TABLE "auth_event"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "time_stamp" TIMESTAMP,
+    "client_ip" CHAR(512),
+    "user_id" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE  ,
+    "origin" CHAR(512),
+    "description" TEXT
+);
+success!
+timestamp: 2022-12-24T18:29:59.422258
+CREATE TABLE "auth_cas"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "user_id" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE  ,
+    "created_on" TIMESTAMP,
+    "service" CHAR(512),
+    "ticket" CHAR(512),
+    "renew" CHAR(1)
+);
+success!
+timestamp: 2022-12-24T18:29:59.545961
+CREATE TABLE "t_post"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "f_title" CHAR(512),
+    "f_author" CHAR(512),
+    "f_body" CHAR(512),
+    "f_created_on" CHAR(512),
+    "is_active" CHAR(1),
+    "created_on" TIMESTAMP,
+    "created_by" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE  ,
+    "modified_on" TIMESTAMP,
+    "modified_by" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE  
+);
+success!
+timestamp: 2022-12-24T18:29:59.651232
+CREATE TABLE "t_post_archive"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "f_title" CHAR(512),
+    "f_author" CHAR(512),
+    "f_body" CHAR(512),
+    "f_created_on" CHAR(512),
+    "is_active" CHAR(1),
+    "created_on" TIMESTAMP,
+    "created_by" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE  ,
+    "modified_on" TIMESTAMP,
+    "modified_by" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE  ,
+    "current_record" INTEGER REFERENCES "t_post" ("id") ON DELETE CASCADE  
+);
+success!
+timestamp: 2022-12-24T18:29:59.773270
+CREATE TABLE "t_comm"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "f_post" INTEGER REFERENCES "t_post" ("id") ON DELETE CASCADE  ,
+    "f_author" CHAR(512),
+    "f_body" CHAR(512),
+    "is_active" CHAR(1),
+    "created_on" TIMESTAMP,
+    "created_by" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE  ,
+    "modified_on" TIMESTAMP,
+    "modified_by" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE  
+);
+success!
+timestamp: 2022-12-24T18:29:59.874490
+CREATE TABLE "t_comm_archive"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "f_post" INTEGER REFERENCES "t_post" ("id") ON DELETE CASCADE  ,
+    "f_author" CHAR(512),
+    "f_body" CHAR(512),
+    "is_active" CHAR(1),
+    "created_on" TIMESTAMP,
+    "created_by" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE  ,
+    "modified_on" TIMESTAMP,
+    "modified_by" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE  ,
+    "current_record" INTEGER REFERENCES "t_comm" ("id") ON DELETE CASCADE  
+);
+success!
+timestamp: 2022-12-24T19:02:59.566391
+CREATE TABLE "post"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "posted_by" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE  ,
+    "title" CHAR(512),
+    "body" TEXT,
+    "image" CHAR(512),
+    "posted_on" TIMESTAMP,
+    "is_active" CHAR(1),
+    "created_on" TIMESTAMP,
+    "created_by" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE  ,
+    "modified_on" TIMESTAMP,
+    "modified_by" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE  
+);
+success!
+timestamp: 2022-12-24T19:02:59.707753
+CREATE TABLE "comm"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "post" INTEGER REFERENCES "post" ("id") ON DELETE CASCADE  ,
+    "body" TEXT,
+    "posted_on" TIMESTAMP,
+    "posted_by" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE  
+);
+success!
+timestamp: 2022-12-24T19:31:31.464444
+CREATE TABLE "category"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "name" CHAR(512)
+);
+success!
+timestamp: 2022-12-24T19:44:39.297188
+ALTER TABLE "post" ADD "category" INTEGER REFERENCES "category" ("id") ON DELETE CASCADE  ;
+success!

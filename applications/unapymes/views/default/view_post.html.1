@@ -1,0 +1,15 @@
+{{extend 'layout.html'}}
+<center>
+<h2>{{=post.title}}</h2>
+
+<center>
+
+    <img width="400px"
+    src="{{=URL('download', args=post.image)}}" />
+
+<center>
+{{=post.body}}
+
+
+</center>
+{{=comments}}

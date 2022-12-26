@@ -1,0 +1,26 @@
+{{extend 'layout.html'}}
+<h1>{{=category.name.title()}}</h1>
+
+{{if request.function=='list_posts_by_datetime':}}
+{{=A('sort by datetime',_class='btn',_href=URL('list_posts_by_datetime',args=category.name))}}
+{{else:}}
+{{pass}}
+
+
+{{for post in rows:}}
+<div class="well">
+    <table>
+          <tr><td><span class="created_on">{{=post.created_on}}</span>
+    <strong>{{=A(post.title,_href=URLpost.)}} </strong><br/> <img width="100px"
+                                                                  src="{{=URL('download', args=post.image)}}" /> </td></tr>
+</div>
+{{pass}}
+
+{{if page>0:}}
+{{=A('previous',_class='btn',href=URL(args=(category.name,page-1)))}}
+{{pass}}
+
+
+{{if len(rows)>=10:}}
+{{=A('next',_class='btn',href=URL(args=(category.name,pag+1)))}}
+{{pass}}
