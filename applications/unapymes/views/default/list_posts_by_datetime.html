@@ -1,20 +1,37 @@
 {{extend 'layout.html'}}
+<center>
 <h1>{{=category.name.title()}}</h1>
 
 
 {{pass}}
-{{=A('Crear un nuevo post',_class='btn btn-primary',_href=URL('new_post',args=category.name))}}
+{{=A('Crear un nuevo post',_class='btn btn-warning',_href=URL('new_post',args=category.name))}}
 <h2>
     
 </h2>
 {{for post in rows:}}
+<!----
 <div class="well">
            <span class="created_on">{{=post.created_on}}</span>
-    <strong>{{=A(post.title,_href=URL('view_post' ,args=post.id))}} <img width="100px"
-                                                                         src="{{=URL('download', args=post.image)}}" /> </strong>
+    <strong>{{=A(post.title,_href=URL('view_post' ,args=post.id))}} 
+
+       <img width="100px"
+       src="{{=URL('download', args=post.image)}}" /> </strong>
 </div>
+!---->
+<hr>
+<div class="card" style="width: 18rem;">
+       <img src="{{=URL('download', args=post.image)}}" class="card-img-top" alt="...">
+       <div class="card-body">
+         <h5 class="card-title">{{=A(post.title)}}</h5>
+         <small id="emailHelp" class="form-text text-muted">{{=post.created_on}}</small> 
+       </br>
+         {{=A('Ver publicacion',_class='btn btn-dark',_href=URL('view_post',args=post.id))}}
+       </div>
+</div>
+</hr>
+
 {{pass}}
-                                  
+</center>                         
 {{if page>0:}}
 {{=A('previous',_class='btn',href=URL(args=(category.name,page-1)))}}
 {{pass}}

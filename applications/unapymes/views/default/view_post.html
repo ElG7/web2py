@@ -1,17 +1,37 @@
 {{extend 'layout.html'}}
 
 <center>
+<hr>
 <h2>{{=post.title}}</h2>
 
+    {{if post.created_by == auth.user_id:}}
+    {{=A('Edita tu post',_class='btn btn-info',_href=URL('edit_post',args=post.id))}}
+    {{pass}}
 <center>
-
-    <img width="400px"
+</hr>
+<hr>
+    <img width="800px"
     src="{{=URL('download', args=post.image)}}" />
-
-<center>
-
-{{=post.body}}
-
-
 </center>
-{{=comments}}
+</hr>
+<hr>
+<h2>Este emprendimiento dice:</h2>
+{{=A(post.body)}}
+</center>
+</hr>
+ 
+<h2>Comentarios</h2>
+
+{{for comment in comments:}}
+<hr>
+<div class="screen">
+    <div class="screen">
+      <h5 class="mt-0">"{{=comment.body}}" </h5>
+      <p> by {{=author(comment.created_by)}} hace {{=prettydate(comment.created_on)}}</p>
+    </div>
+  </div>
+</hr>
+{{pass}}
+<hr>
+</hr>
+{{=form}}

@@ -14,18 +14,20 @@ db.define_table('post',
             auth.signature)
 
 db.define_table('comm',
-                Field('post','reference post'),
-                Field('body','text',label="Cuerpo",
+                Field('post','reference post',readable=False,writable=False),
+                Field('body','text',label="¡Comentanos sobre esta publicación!",
                 requires=IS_NOT_EMPTY(error_message="Escriba el comentario.")),
                 auth.signature)
 
-"""from gluon.contrib.populate import populate
-if db(db.auth_user).count()<2:
-    populate(db.auth_user,100)
-    db.commit()
-if db(db.post).count()<2:
-    populate(db.post,500)
-    db.commit()
+
+def author(id):
+    if id is None:
+     return "Unknown"
+    else:
+     user= db.auth_user(id)
+    return '%(first_name)s %(last_name)s' % user
+
+from gluon.contrib.populate import populate
 if db(db.comm).count()<2:
-    populate(db.comm,1000)
-    db.commit()"""
+    populate(db.comm,10)
+    db.commit()

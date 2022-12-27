@@ -7,6 +7,8 @@
 
 response.menu = [
     (T('Home'), False, URL('default', 'index')),
+    
+    ##(('ICCI'), False, URL('https://www.icci-unap.cl/')),
 ]
 for row in db(db.category).select():
     response.menu.append((T(row.name.title()), False, URL('default','list_posts_by_datetime',args=row.name)))

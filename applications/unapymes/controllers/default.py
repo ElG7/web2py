@@ -24,17 +24,20 @@ def index():
     rows = db(db.category).select()
     return locals()
 
-
+@auth.requires_login()
 def new_post():
     category = get_category()
     db.post.category.default = category.id
     form= SQLFORM(db.post).process(next='view_post/[id]')
     return locals()
 
+@auth.requires_login()
 def edit_post():
     id= request.args(0,cast=int)
     form= SQLFORM(db.post, id).process(next='view_post/[id]')
     return locals()
+
+
 
 def list_posts_by_datetime():
     category = get_category()
@@ -53,10 +56,17 @@ def list_posts_by_author():
     rows = db(db.post.created_by==user_id).select(orderby=~db.post.created_on,limitby=(start,stop))
     return locals()
 
+
 def view_post():
     id= request.args(0,cast=int)
     post = db.post(id) or redirect(URL('index'))
-    comments = db(db.comm.post==post.id).select(orderby=~db.comm.created_on)
+    comment = db(db.comm.post==post.id).select(orderby=~db.comm.created_on,limitby=(0,1)).first()
+    if auth.user:
+        db.comm.post.default = id
+        form = SQLFORM(db.comm).process()
+    else:
+        form= A("Debes iniciar sesion para comentar",_href=URL('user/login',vars=dict(_next=URL(args=request.args))))
+    comments = db(db.comm.post==post.id).select(orderby=db.comm.created_on)
     return locals()
 
 # ---- API (example) -----
