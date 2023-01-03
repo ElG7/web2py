@@ -3,6 +3,7 @@
 <center>
 <hr>
 <h2>{{=post.title}}</h2>
+<p> by {{=author(post.created_by)}}</p>
 
     {{if post.created_by == auth.user_id:}}
     {{=A('Edita tu post',_class='btn btn-info',_href=URL('edit_post',args=post.id))}}
